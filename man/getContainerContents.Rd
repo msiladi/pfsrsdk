@@ -4,15 +4,16 @@
 \alias{getContainerContents}
 \title{getContainerContents -  Gets information about container contents.}
 \usage{
-getContainerContents(coreApi, containerType, containerBarcode,
-  fullMetadata = TRUE, useVerbose = FALSE)
+getContainerContents(coreApi, containerBarcode,
+  containerType = "EXPERIMENT_CONTAINER", fullMetadata = TRUE,
+  useVerbose = FALSE)
 }
 \arguments{
 \item{coreApi}{coreApi object with valid jsessionid}
 
-\item{containerType}{container entity type}
-
 \item{containerBarcode}{container barcode}
+
+\item{containerType}{container entity type}
 
 \item{fullMetadata}{return full metadata}
 

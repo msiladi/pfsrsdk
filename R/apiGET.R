@@ -111,7 +111,7 @@ apiGET <-
       
       content <- httr::content(response)$value
       
-      
+      # parrallel this to get all the content at once.
       while (more_content)
         
       {

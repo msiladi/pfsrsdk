@@ -8,8 +8,7 @@ verbose <- FALSE
 
 #setup to work with environment
 
-instance <<- "test_environments/beer2.json"
-
+instance <- "test_environments/5-3-8.json"
 
 
      test_that(paste("test get expt., expt. sample, raw and intermediate data", instance),

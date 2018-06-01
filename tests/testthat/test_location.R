@@ -8,7 +8,7 @@ verbose <- FALSE
 
 #setup to work with environment
 
-instance <<- "test_environments/5-2-2.json"
+instance <- "test_environments/5-3-8.json"
 
 
 

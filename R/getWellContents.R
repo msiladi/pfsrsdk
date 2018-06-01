@@ -2,9 +2,7 @@
 #'
 #' \code{getWellContents} Gets information about container well contents.
 #' @param coreApi coreApi object with valid jsessionid
-#' @param containerType container type
 #' @param containerBarcode container barcode
-#' @param containerWellNum container well number as a string
 #' @param useVerbose  Use verbose communication for debugging
 #' @export
 #' @return RETURN returns a list $entity contains cell information, $response contains the entire http response
@@ -23,9 +21,7 @@
 
 getWellContents <-
   function (coreApi,
-            containerType,
             containerBarcode,
-            containerWellNum,
             useVerbose = FALSE)
   {
     #clean the name for ODATA
@@ -38,14 +34,13 @@ getWellContents <-
     
     #first get the cellID for the well
     
-    id <-
-      getContainerCellIds(coreApi, containerType, containerBarcode, useVerbose = FALSE)$entity[containerWellNum]
-    
+    #id <- getContainerCellIds(coreApi, containerType, containerBarcode, useVerbose = FALSE)$entity[containerWellNum]
+
     
     resource <- "CELL"
     
     query   <-
-      paste0("(", id, ")?$expand=CELL_CONTENTS($expand=SAMPLE_LOT)")
+      paste0("EXPERIMENT_CONTAINER(", containerBarcode, ")/CONTAINER?$expand=REV_IMPL_CONTAINER_CELL($expand=CONTENT($expand=IMPL_SAMPLE_LOT))")
     
     
     header <-

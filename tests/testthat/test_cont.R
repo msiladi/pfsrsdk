@@ -8,7 +8,7 @@ verbose <- FALSE
 
 #setup to work with environment
 
-instance <- "test_environments/5-2-2.json"
+instance <- "test_environments/5-3-8.json"
 
 
 
@@ -24,12 +24,11 @@ instance <- "test_environments/5-2-2.json"
               expect_match(api$coreUrl,con$coreApi$coreUrl,all=verbose)
               expect_that(is.null(con$coreApi$jsessionId),equals(FALSE))
               
+              containers <- getExperimentContainers(con$coreApi,"BIOCHEMICAL DOSE RESPONSE EXPERIMENT","BDR25", TRUE)
               
-              b<-CoreAPIV2::getEntityByBarcode(con$coreApi,"VIAL","VIA1",fullMetadata=FALSE,useVerbose=verbose)$entity
-
-              expect_match(b$Barcode,"VIA1",all=verbose)
+browser()              
               
-              cc<-CoreAPIV2::getContainerContents(con$coreApi,"VIAL","VIA1")   
+              cc<-CoreAPIV2::getContainerContents(con$coreApi,"EXPERIMENT_CONTAINERS",containers$entity[2])   
               
               expect_match(cc$entity$CELLS[[1]]$CELL_CONTENTS[[1]]$SAMPLE_LOT$Name,
                            "PS2-1",all=verbose)

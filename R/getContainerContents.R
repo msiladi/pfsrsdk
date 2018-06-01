@@ -2,8 +2,8 @@
 #'
 #' \code{getContainerContents} Gets information about container contents.
 #' @param coreApi coreApi object with valid jsessionid
-#' @param containerType container entity type
 #' @param containerBarcode container barcode
+#' @param containerType container entity type
 #' @param fullMetadata return full metadata
 #' @param useVerbose  Use verbose communication for debugging
 #' @export
@@ -20,8 +20,8 @@
 
 getContainerContents <-
   function(coreApi,
-           containerType,
            containerBarcode,
+           containerType = "EXPERIMENT_CONTAINER",
            fullMetadata = TRUE,
            useVerbose = FALSE)
   {
@@ -31,14 +31,15 @@ getContainerContents <-
     
     
     
-    query   <-
-      paste0(
-        "('",
-        containerBarcode,
-        "')?$expand=CELLS($expand=CELL_CONTENTS($expand=SAMPLE_LOT))"
-      )
+    # query   <-
+    #   paste0(
+    #     "('",
+    #     containerBarcode,
+    #     "')?$expand=REV_IMPL_CONTAINER_CELL($expand=CELL_CONTENTS($expand=SAMPLE_LOT))"
+    #   )
     
     
+    query   <-  paste0("('", containerBarcode, "')/CONTAINER?$expand=REV_IMPL_CONTAINER_CELL($expand=CONTENT($expand=IMPL_SAMPLE_LOT))")
     
     
     if (fullMetadata) {

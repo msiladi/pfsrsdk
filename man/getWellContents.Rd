@@ -4,17 +4,12 @@
 \alias{getWellContents}
 \title{getWellContents -  Gets information about a single container well contents.}
 \usage{
-getWellContents(coreApi, containerType, containerBarcode, containerWellNum,
-  useVerbose = FALSE)
+getWellContents(coreApi, containerBarcode, useVerbose = FALSE)
 }
 \arguments{
 \item{coreApi}{coreApi object with valid jsessionid}
 
-\item{containerType}{container type}
-
 \item{containerBarcode}{container barcode}
-
-\item{containerWellNum}{container well number as a string}
 
 \item{useVerbose}{Use verbose communication for debugging}
 }
