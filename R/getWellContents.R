@@ -1,43 +1,47 @@
-#' getWellContents -  Gets information about a single container well contents.
+#' getWellContents -  Gets content information of a single container well.
 #'
-#' \code{getWellContents} Gets information about container well contents.
+#' \code{getWellContents} Gets content information of a single container well.
 #' @param coreApi coreApi object with valid jsessionid
 #' @param containerBarcode container barcode
-#' @param useVerbose  Use verbose communication for debugging
+#' @param containerWellNum number location of container's well
+#' @param containerType entity type of container (default: "CONTAINER")
+#' @param useVerbose  Use verbose communication for debugging (default: FALSE)
 #' @export
-#' @return RETURN returns a list $entity contains cell information, $response contains the entire http response
+#' @return RETURN returns a list $entity contains well information, $response contains the entire http response
 #' @examples
 #' \dontrun{
 #' api<-CoreAPI("PATH TO JSON FILE")
 #' login<- CoreAPIV2::authBasic(api)
-#' cell<-CoreAPIV2::getWellContents(login$coreApi,"VIA9","1",fullMetadata = TRUE)
-#' CoreAPIV2::logOut(login$coreApi )
+#' well<-CoreAPIV2::getWellContents(login$coreApi,"VIA9","1", "VIAL")
+#' CoreAPIV2::logOut(login$coreApi)
 #' }
 #' @author Craig Parman ngsAnalytics, ngsanalytics.com
-#' @description \code{getWellContents} -  Gets information about a single container well contents.
-
-
-
+#' @author Scott Russell scott.russell@thermofisher.com
+#' @description \code{getWellContents} - Gets content information of a single container well.
 
 getWellContents <-
   function(coreApi,
              containerBarcode,
+             containerWellNum,
+             containerType = "CONTAINER",
              useVerbose = FALSE) {
-
-    # make sure containerWellNum is numeric
-
+    containerType <- CoreAPIV2::odataCleanName(containerType)
     containerWellNum <- as.numeric(containerWellNum)
-
     resource <- "CELL"
 
-    query <-
-      paste0("EXPERIMENT_CONTAINER(", containerBarcode, ")/CONTAINER?$expand=REV_IMPL_CONTAINER_CELL($expand=CONTENT($expand=IMPL_SAMPLE_LOT))")
+    cellId <- CoreAPIV2::getContainerCellIds(coreApi, containerBarcode, containerType, useVerbose)$entity[containerWellNum]
 
+    CoreAPIV2::case(
+      grepl("[0-2]+\\.[0-9]+\\.[0-9]+", coreApi$semVer) ~ {
+        query <- paste0("(", cellId, ")?$expand=CONTENT($expand=IMPL_SAMPLE_LOT)")
+      },
+      grepl("[3-9]+\\.[0-9]+\\.[0-9]+", coreApi$semVer) ~ {
+        query <- paste0("(", cellId, ")?$expand=CELL_CONTENTS($expand=SAMPLE_LOT)")
+      }
+    )
 
     header <-
-      c("Content-Type" = "application/json;odata.metadata=full", Accept = "application/json")
-
-
+      c("Content-Type" = "application/json;odata.metadata=minimal", Accept = "application/json")
 
     response <-
       CoreAPIV2::apiGET(
@@ -47,8 +51,6 @@ getWellContents <-
         headers = header,
         useVerbose = useVerbose
       )
-
-
 
     response <-
       list(entity = response$content, response = response$response)
