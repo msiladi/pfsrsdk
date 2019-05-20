@@ -1,0 +1,40 @@
+{
+  "values": [
+    {
+      "key": "tenant",
+      "value": "FULLNAMEOFTENANT"
+    },    
+    {
+      "key": "alias",
+      "value": "SHORTNAMEINURL"
+    },
+    {
+      "key": "scheme",
+      "value": "https"
+    },
+    {
+      "key": "host",
+      "value": "HOSTNAME"
+    },
+    {
+      "key": "port",
+      "value": "443"
+    },
+    {
+      "key": "context",
+      "value": ""
+    },
+    {
+      "key": "api_username",
+      "value": "USER"
+    },
+    {
+      "key": "api_password",
+      "value": "PASSWORD"
+    },
+    {
+      "key": "semver",
+      "value": ""
+    }
+  ]
+}
